@@ -112,36 +112,16 @@ def convert_to_roman(arabic_number, options = {})
     1 => "I",
   }
   roman_numeral_array = []
-  remainder_number = arabic_number
-  roman_numerals.each do |num, letter|
-    if remainder_number >= 1000
-        roman_numeral_array << (roman_numerals[1000] * (remainder_number / 1000))
-        remainder_number -= (1000 * (remainder_number/1000))
-    elsif remainder_number >= 500
-        roman_numeral_array << (roman_numerals[500] * (remainder_number / 500))
-        remainder_number -= (500 * (remainder_number/500))
-    elsif remainder_number >= 100
-        roman_numeral_array << (roman_numerals[100] * (remainder_number / 100))
-        remainder_number -= (100 * (remainder_number/100))
-    elsif remainder_number >= 50
-        roman_numeral_array << (roman_numerals[50] * (remainder_number / 50))
-        remainder_number -= (50 * (remainder_number/50))
-    elsif remainder_number >= 10
-        roman_numeral_array << (roman_numerals[10] * (remainder_number / 10))
-        remainder_number -= (10 * (remainder_number/10))
-    elsif remainder_number >= 5
-        roman_numeral_array << (roman_numerals[5] * (remainder_number / 5))
-        remainder_number -= (5 * (remainder_number/5))
-    elsif remainder_number >= 1
-        roman_numeral_array << (roman_numerals[1] * (remainder_number / 1))
-        remainder_number -= (1 * (remainder_number/1))
-    end
+  roman_numerals.each do |arab, roman|
+    numeral = roman * (arabic_number / arab)
+    arabic_number = arabic_number % arab
+    roman_numeral_array << numeral
   end
   numeral_string = roman_numeral_array.join("")
   if options == {modern: true}
     p numeral_string.gsub("DCCCC", "CM").gsub("CCCC", "CD").gsub("LXXXX", "XC").gsub("XXXX", "XL").gsub("VIIII", "IX").gsub("IIII", "IV")
   else
-    p numeral_string.upcase
+    p numeral_string
   end
 end
 
