@@ -1,41 +1,66 @@
-def straight_line_include?(word, puzzle)
-  no_find = false
+# def straight_line_include?(word, puzzle)
+#   no_find = false
 
-  # def check(item, word)
-  #    return true if item.join.include?(word) || item.join.reverse.include?(word)
-  # end
+#   # def check(item, word)
+#   #    return true if item.join.include?(word) || item.join.reverse.include?(word)
+#   # end
 
+#   puzzle.each do |row|
+#     return true if row.join.include?(word) || row.join.reverse.include?(word)
+#   end
+
+#   puzzle.transpose.each do |column|
+#     return true if column.join.include?(word) || column.join.reverse.include?(word)
+#   end
+
+#   diag_puzzle = puzzle.push([0,0,0,0,0,0,0])
+
+#   rotate_counter = 1
+#   diag_array_left_to_right = []
+#   until diag_puzzle.rotate(rotate_counter) == diag_puzzle
+#     diag_puzzle.rotate(rotate_counter).each_with_index do |array, idx|
+#       diag_array_left_to_right << array[idx]
+#     end
+#     return true if diag_array_left_to_right.join.include?(word) || diag_array_left_to_right.join.reverse.include?(word)
+#     rotate_counter += 1
+#   end
+
+#   rotate_counter = 1
+#   diag_array_right_to_left = []
+#   until diag_puzzle.rotate(rotate_counter) == diag_puzzle
+#     diag_puzzle.rotate(rotate_counter).each_with_index do |array, idx|
+#       diag_array_right_to_left << array[-idx]
+#     end
+#     return true if diag_array_right_to_left.join.include?(word) || diag_array_right_to_left.join.reverse.include?(word)
+#     rotate_counter += 1
+#   end
+
+#   return no_find
+# end
+
+# REFACTORED SOLUTION
+
+def horizontal_solve(word, puzzle)
   puzzle.each do |row|
     return true if row.join.include?(word) || row.join.reverse.include?(word)
   end
+  false
+end
 
-  puzzle.transpose.each do |column|
-    return true if column.join.include?(word) || column.join.reverse.include?(word)
+def vertical_solve(word, puzzle)
+  horizontal_solve(word, puzzle.transpose)
+end
+
+def diagonal_solve(word, puzzle, dir)
+  rotate = puzzle.map.with_index do |row, index|
+    row << nil
+    row.rotate(index * dir)
   end
+  vertical_solve(word, rotate)
+end
 
-  diag_puzzle = puzzle.push([0,0,0,0,0,0,0])
-
-  rotate_counter = 1
-  diag_array_left_to_right = []
-  until diag_puzzle.rotate(rotate_counter) == diag_puzzle
-    diag_puzzle.rotate(rotate_counter).each_with_index do |array, idx|
-      diag_array_left_to_right << array[idx]
-    end
-    return true if diag_array_left_to_right.join.include?(word) || diag_array_left_to_right.join.reverse.include?(word)
-    rotate_counter += 1
-  end
-
-  rotate_counter = 1
-  diag_array_right_to_left = []
-  until diag_puzzle.rotate(rotate_counter) == diag_puzzle
-    diag_puzzle.rotate(rotate_counter).each_with_index do |array, idx|
-      diag_array_right_to_left << array[-idx]
-    end
-    return true if diag_array_right_to_left.join.include?(word) || diag_array_right_to_left.join.reverse.include?(word)
-    rotate_counter += 1
-  end
-
-  return no_find
+def straight_line_include?(word, puzzle)
+  horizontal_solve(word, puzzle) || vertical_solve(word, puzzle) || diagonal_solve(word, puzzle, 1) || diagonal_solve(word, puzzle, -1)
 end
 
 
