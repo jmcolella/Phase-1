@@ -64,34 +64,34 @@ def recursive_sudoku(board)
   return board if solved?(board)
 
   elm = []
-  i = 0
-  j = 0
+  x = 0
+  y = 0
 
   board.each_with_index do |row, i|
     row.each_with_index do |item, j|
       if item.is_a?(Array)
         elm = item
-        i = i
-        j = j
+        x = i
+        y = j
         break
       end
     end
+    break
   end
 
-  p elm
-  p i
-  p j
-
-
-
+    board[x][y] = board[x][y][0]
+    p board
+    row_eliminate(board)
+    row_eliminate(board.transpose)
 
   # counter = 0
-  # while counter < sub_array.length
-  #   board[i][j] = board[i][j][counter]
-  #   recursive_sudoku(board)
+  # while counter < elm.length
+  #   board[x][y] = board[x][y][counter]
+  #   row_eliminate(board)
+  #   row_eliminate(board.transpose)
+  #   # recursive_sudoku(board)
   #   counter += 1
   # end
-
 end
 
 
