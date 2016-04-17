@@ -1,6 +1,6 @@
 def convert_table(array)
   return_array = []
-  array.each do |row|
+  array.map.each do |row|
     data_hash = Hash.new
     data_hash[array[0][0]] = row[0]
     data_hash[array[0][1]] = row[1]
